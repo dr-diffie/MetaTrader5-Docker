@@ -1,6 +1,5 @@
 FROM ghcr.io/linuxserver/baseimage-kasmvnc:debianbookworm
 
-# set version label
 ARG BUILD_DATE
 ARG VERSION
 LABEL build_version="Metatrader Docker:- ${VERSION} Build-date:- ${BUILD_DATE}"
@@ -26,10 +25,13 @@ RUN apt-get update \
     && wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources \
     && dpkg --add-architecture i386 \
     && apt-get update \
-    && apt-get install --install-recommends -y winehq-stable \
+    && apt-get install --install-recommends -y \
+       winehq-stable=9.0.0.0~bookworm-1 \
+       wine-stable=9.0.0.0~bookworm-1 \
+       wine-stable-amd64=9.0.0.0~bookworm-1 \
+       wine-stable-i386=9.0.0.0~bookworm-1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/apt/keyrings/winehq-archive.key
-
 
 COPY /Metatrader /Metatrader
 RUN chmod +x /Metatrader/start.sh
